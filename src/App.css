@@ -1,42 +1,524 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
+/* =========================================
+   1. GLOBAL APP STYLING & CONTAINERS
+========================================= */
+body {
+  background-color: #f1f5f9;
+  color: #334155;
+}
+
+#appWrapper {
+  max-width: 1200px;
+  margin: 2rem auto;
   padding: 2rem;
-  text-align: center;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.header-container h1 {
+  font-size: 1.75rem;
+  margin: 0;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* The Main Window Grid */
+.container {
+  padding: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+/* LOCK THE ROW HEIGHT ONLY ON THE DASHBOARD */
+#appWrapper .container > .row {
+  height: 70vh; 
+  margin: 0; 
+}
+
+
+/* =========================================
+   2. DASHBOARD LEFT COLUMN (CHAT LIST)
+========================================= */
+#chats {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-right: 1px solid #e2e8f0;
+  height: 100%; /* Perfectly fills the 70vh row */
+  overflow-y: auto; /* Adds the scrollbar when chats overflow */
+}
+
+/* Chat Buttons */
+.ChatOption {
+  width: 100%;
+  text-align: left;
+  background-color: transparent;
+  color: #1f2937;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ChatOption:hover {
+  background-color: #e8f0fe;
+  color: #2563eb;
+}
+
+.ChatOption.active {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 500;
+}
+
+/* New Chat Input */
+#chats form {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#chats form input {
+  flex: 1;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+}
+
+#chats form input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+#chats form button {
+  flex-shrink: 0;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.35rem 0.75rem;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+#chats form button:hover {
+  background-color: #1d4ed8;
+}
+
+
+/* =========================================
+   3. DASHBOARD RIGHT COLUMN (CHAT WINDOW)
+========================================= */
+#previewCol {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  padding: 1.5rem;
+  height: 100%; /* Perfectly fills the 70vh row */
+  overflow: hidden;
+}
+
+#previewCol h2 {
+  margin: auto;
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+#chatbotContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+#chatbotContainer h2 {
+  margin: 0 0 1rem 0;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #0f172a;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+#messagesContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Message Bubbles */
+.userMessage {
+  background-color: #2563eb;
+  color: white;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+  border-radius: 12px 12px 0 12px;
+  padding: 1em;
+  align-self: flex-end;
+  max-width: 70%;
+}
+
+.AIMessage {
+  background-color: #f8fafc;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border-radius: 12px 12px 12px 0;
+  padding: 1em;
+  align-self: flex-start;
+  max-width: 70%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.AIMessage pre, .userMessage pre {
+  white-space: pre-wrap;
+  font-family: inherit;
+  margin: 0;
+}
+
+/* User Input Bar */
+.userQuestionInput {
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+.userQuestionInput form .mb-3 {
+  margin-bottom: 0 !important; 
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.userQuestionInput label {
+  display: none; 
+}
+
+.userQuestionInput input {
+  flex: 1;
+  border: 1px solid #cbd5e1;
+  border-radius: 24px;
+  padding: 0.75rem 1.25rem;
+  background-color: white;
+}
+
+.userQuestionInput input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.userQuestionInput button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.userQuestionInput button:hover {
+  background-color: #1d4ed8;
+}
+
+
+/* =========================================
+   4. LANDING PAGE STYLES
+========================================= */
+.landing-page {
+  background-color: #f8fafc;
+  min-height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow-x: hidden; 
+}
+
+.landing-navbar {
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  padding: 1rem 0;
+}
+
+.brand-logo {
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: #0f172a !important;
+}
+
+.nav-login-btn {
+  border-radius: 20px;
+  padding: 0.4rem 1.5rem;
+  font-weight: 600;
+  border-width: 2px;
+}
+
+.hero-section {
+  padding: 6rem 1rem 4rem;
+  max-width: 800px;
+}
+
+.hero-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.03em;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: #64748b;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.cta-button {
+  background-color: #2563eb !important;
+  border: none !important;
+  border-radius: 30px !important;
+  padding: 0.8rem 2.5rem !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3) !important;
+  transition: transform 0.2s, background-color 0.2s !important;
+}
+
+.cta-button:hover {
+  background-color: #1d4ed8 !important;
+  transform: translateY(-2px);
+}
+
+.features-section {
+  padding: 2rem 1rem 6rem;
+}
+
+.feature-card {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 16px !important;
+  transition: box-shadow 0.3s, transform 0.3s !important;
+  background-color: #ffffff !important;
+  padding: 1rem;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.feature-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.feature-card .card-title {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.feature-card .card-text {
+  color: #64748b;
+}
+
+.bottom-cta {
+  padding: 4rem 1rem 5rem;
+  background-color: #ffffff;
+  border-top: 1px solid #e2e8f0;
+}
+
+.bottom-cta h3 {
+  font-weight: 800;
+  color: #0f172a;
+  font-size: 2rem;
+}
+
+/* FIX: Remove chat-window container styles from the landing page */
+.landing-page .container {
+  border: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+/* =========================================
+   2. DASHBOARD LEFT COLUMN (CHAT LIST)
+========================================= */
+#chats {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-right: 1px solid #e2e8f0;
+  
+  /* BRUTE FORCE THE HEIGHT HERE */
+  height: 70vh !important; 
+  max-height: 70vh !important; 
+  overflow-y: auto; 
+}
+
+/* =========================================
+   3. DASHBOARD RIGHT COLUMN (CHAT WINDOW)
+========================================= */
+#previewCol {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  padding: 1.5rem;
+  
+  /* BRUTE FORCE THE HEIGHT HERE */
+  height: 70vh !important; 
+  max-height: 70vh !important; 
+  overflow: hidden;
+}
+
+.ChatOption {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+}
+
+/* =========================================
+   FIXED RESPONSIVE DASHBOARD
+========================================= */
+
+/* 1. Remove the fixed height from the Row on mobile */
+#appWrapper .container > .row {
+  height: 70vh; 
+  margin: 0; 
+  display: flex;
+}
+
+/* 2. Chat List (Sidebar) */
+#chats {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-right: 1px solid #e2e8f0;
+  height: 100%; 
+  overflow-y: auto;
+}
+
+/* 3. Chat Window (Main Content) */
+#previewCol {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  padding: 1.5rem;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* 4. MOBILE SPECIFIC OVERRIDES */
+@media (max-width: 767px) {
+  #appWrapper {
+    margin: 0;
+    padding: 10px;
+    border-radius: 0;
   }
-  to {
-    transform: rotate(360deg);
+
+  /* Stack them, but don't let them explode in height */
+  #appWrapper .container > .row {
+    height: auto; /* Let the container grow */
+    flex-direction: column;
+  }
+
+  #chats {
+    height: 200px !important; /* Fixed small height for chat list on mobile */
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+    flex-shrink: 0; /* Don't let it disappear */
+  }
+
+  #previewCol {
+    height: 60vh !important; /* Give the chat window the priority */
+    padding: 1rem;
+  }
+
+  .header-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+  
+  .header-container h1 {
+    font-size: 1.25rem;
+  }
+  
+  .header-container h2 {
+    font-size: 1rem;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* =========================================
+   EXAMPLE PROMPTS SECTION
+========================================= */
+.examples-section {
+  padding: 0rem 1rem 4rem;
+  max-width: 1000px;
 }
 
-.card {
-  padding: 2em;
+.example-prompt-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px 16px 16px 0; /* Styled like a chat bubble */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
 }
 
-.read-the-docs {
-  color: #888;
+.example-prompt-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.prompt-text {
+  font-style: italic;
+  color: #475569;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.prompt-text::before {
+  font-size: 2rem;
+  color: #cbd5e1;
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  font-family: serif;
 }

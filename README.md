@@ -1,16 +1,40 @@
-# React + Vite
+# Goal Getter
+An Agentic AI Goal Planning Assistant that seamlessly integrates with Google Workspace and gives actionable insights to keep you on track.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Agentic AI Details
+- Tool calling agent implemented using a LangGraph graph
+- State saving (using SqliteSaver) in SQL database for persistent, context-aware chats
+- Human-in-the-Loop (HITL) authorization to confirm AI's Google Tasks and Google Calendar edits and Gmail drafts
+- Chat separation using Thread IDs
+- Tools:
+    - Read Google Calendar events
+    - Create Google Calendar events
+    - Read Google Tasks
+    - Create Google Tasks
+    - Send Email (to self)
 
-Currently, two official plugins are available:
+### Graph Architecture:
+![Graph architecture of the AI System](src/assets/graph.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tools / Languages / Frameworks
+- Frontend: Javascript + React
+- Backend: Python + Flask
+- AI Framework: LangGraph
+- DB: SQL
+- LLM: Gemini
+- Authentication: Google Authentication (Sign in with Google)
 
-## React Compiler
+### User Requirements
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Gemini API Key
+    - Uses following model: "gemini-3-flash-preview"
+- Must provide access to (upon login):
+    - Read + Create Calendar events
+    - Read + Create Google Tasks
+    - Send Email (to self)
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Developer Requirements
+
+- Must include a client_secrets.json file in backend folder
+- Must include a .env file in backend folder with SECRET_APP_KEY
