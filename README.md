@@ -1,5 +1,5 @@
 # Goal Getter
-An Agentic AI Goal Planning Assistant that seamlessly integrates with Google Workspace and gives actionable insights to keep you on track.
+An Agentic AI Goal Planning Assistant that seamlessly integrates with Google Workspace and gives actionable insights to keep users on track to meet their goals.
 
 ## Agentic AI Details
 - Tool calling agent implemented using a LangGraph graph
