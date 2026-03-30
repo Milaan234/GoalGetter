@@ -26,7 +26,8 @@ def call_llm(state: State):
   session['cancel_pending_tools'] = False
 
   llm = ChatGoogleGenerativeAI(
-    model = 'gemini-3-flash-preview',
+    #model = 'gemini-3-flash-preview',
+    model = 'gemini-3.1-flash-lite-preview',
     temperature = 0.7,
     google_api_key = GEMINI_API_KEY
   )

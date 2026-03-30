@@ -37,14 +37,17 @@ def add_calendar_events(greeting: str, events: list[EventInput]):
       return {"message": "Adding calendar events skipped because the user cancelled a previous step."}
     
     events_display = ""
-    for event in events:
-      start = datetime.fromisoformat(event["start_time"])
-      end = datetime.fromisoformat(event["end_time"])
+    try:
+      for event in events:
+        start = datetime.fromisoformat(event["start_time"])
+        end = datetime.fromisoformat(event["end_time"])
 
-      start_str = start.strftime("%a, %b %d %Y — %I:%M %p")
-      end_str = end.strftime("%I:%M %p")
+        start_str = start.strftime("%a, %b %d %Y — %I:%M %p")
+        end_str = end.strftime("%I:%M %p")
 
-      events_display += f"{event['summary']}\n  {start_str} → {end_str}\n\n"
+        events_display += f"{event['summary']}\n  {start_str} → {end_str}\n\n"
+    except Exception as e:
+      return {"error": f"Date formatting error. Please ensure start_time and end_time are strict ISO 8601 strings. Do not add extra text. Error details: {e}"}
 
     decision = interrupt(f"{greeting}\n\nApprove adding the following event(s)?\n\n{events_display}")
     decision_clean = decision.strip().lower()
@@ -221,9 +224,12 @@ def add_google_tasks(greeting: str, tasks: list[TaskInput]):
     return {"message": "Adding to google tasks skipped because the user cancelled a previous step."}
 
   tasks_display = ""
-  for task in tasks:
-    due_str = datetime.fromisoformat(task['due'].replace('Z', '+00:00')).strftime('%a, %b %d %Y') if task.get('due') else ""
-    tasks_display += f"- {task['title']} (Due: {due_str})\n"
+  try:
+    for task in tasks:
+      due_str = datetime.fromisoformat(task['due'].replace('Z', '+00:00')).strftime('%a, %b %d %Y') if task.get('due') else ""
+      tasks_display += f"- {task['title']} (Due: {due_str})\n"
+  except Exception as e:
+    return {"error": f"Invalid date format for 'due'. Do not append notes to the date string. Use strict ISO format. Error: {e}"}
 
   decision = interrupt(f"{greeting}\n\nApprove adding the following task(s)?\n\n{tasks_display}\n\nApprove? (yes/no)")
 

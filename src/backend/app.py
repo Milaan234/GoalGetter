@@ -238,8 +238,16 @@ def run_graph():
       addMessage(thread_id=thread_id, role="AI", content=message, message_type="approval")
       return jsonify({"role": "AI", "content" : message, "message_type" : "approval", "thread_id" : thread_id})
 
-    addMessage(thread_id=thread_id, role="AI", content=str(response['messages'][-1].content[0]['text']), message_type="regular")
-    return jsonify({"role": "AI", "content": str(response['messages'][-1].content[0]['text']), "message_type" : "regular", "thread_id" : thread_id})
+    last_message_content = response['messages'][-1].content
+    
+    if isinstance(last_message_content, str):
+        ai_text = last_message_content
+    elif isinstance(last_message_content, list) and len(last_message_content) > 0 and 'text' in last_message_content[0]:
+        ai_text = str(last_message_content[0]['text'])
+    else:
+        ai_text = str(last_message_content)
+    addMessage(thread_id=thread_id, role="AI", content=str(ai_text), message_type="regular")
+    return jsonify({"role": "AI", "content": str(ai_text), "message_type" : "regular", "thread_id" : thread_id})
 
   except Exception as e:
     print(response)

@@ -27,7 +27,7 @@ An Agentic AI Goal Planning Assistant that seamlessly integrates with Google Wor
 ### User Requirements
 
 - Gemini API Key
-    - Uses following model: "gemini-3-flash-preview"
+    - Uses following model: "gemini-3.1-flash-lite-preview"
 - Must provide access to (upon login):
     - Read + Create Calendar events
     - Read + Create Google Tasks

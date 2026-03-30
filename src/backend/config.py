@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 SECRET_APP_KEY = os.getenv('SECRET_APP_KEY')
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") or ""
 
 # REMOVE BEFORE DEPLOYMENT
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1" 
