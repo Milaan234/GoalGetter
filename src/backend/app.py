@@ -194,7 +194,6 @@ def get_chat_messages():
       "created_at": row[3]
     } for row in rows
   ]
-  print("Messages:", messages)
   return jsonify({"message": messages})
 
 @app.route('/ask_ai', methods=['POST'])
@@ -229,7 +228,17 @@ def run_graph():
     else:
       response = graph.invoke({"messages": [{"role": "user", "content": user_query}]}, config=config)
     print("Done calling graph.")
-    print(response)
+    # print(response)
+    # -------------------------------------------
+    last_msg = response["messages"][-1]
+
+    # Check for and print tool calls (or explicitly print "None")
+    if hasattr(last_msg, 'tool_calls') and last_msg.tool_calls:
+        for tool in last_msg.tool_calls:
+            print(f"\n🛠️ [TOOL CALL] Name: {tool['name']} | Parameters: {tool['args']}\n")
+    else:
+        print("\n🛠️ [TOOL CALL] None\n")
+    # -------------------------------------------
 
     if response.get("__interrupt__"):
       message = (
@@ -250,7 +259,6 @@ def run_graph():
     return jsonify({"role": "AI", "content": str(ai_text), "message_type" : "regular", "thread_id" : thread_id})
 
   except Exception as e:
-    print(response)
     print(e)
     message = "Error: " + str(e)
     addMessage(thread_id=thread_id, role="AI", content=message, message_type="error")
